@@ -1,0 +1,37 @@
+#core
+create_community:
+  caption: "Create community"
+  event: "op_action.post_execute_community_edit"
+
+#diary (opDiaryPlugin)
+post_diary:
+  caption: "Post diary"
+  event: "op_action.post_execute_diary_create"
+  check: "redirect"
+
+post_diary_comment:
+  caption: "Post diary commnet"
+  event: "op_action.post_execute_diaryComment_create"
+  check: "redirect"
+
+#community_topic (opCommunityTopicPlugin)
+create_community_topic:
+  caption: "Create community topic"
+  event: "op_action.post_execute_communityTopic_create"
+  check: "redirect"
+
+post_community_topic_comment:
+  caption: "Post community topic comment"
+  event: "op_action.post_execute_communityTopicComment_create"
+  check: "redirect"
+
+#community_event (opCommunityTopicPlugin)
+create_community_event:
+  caption: "Create community event"
+  event: "op_action.post_execute_communityEvent_create"
+  check: "redirect"
+
+post_community_event_comment:
+  caption: "Post community event comment"
+  event: "op_action.post_execute_communityEventComment_create"
+  check: "redirect"

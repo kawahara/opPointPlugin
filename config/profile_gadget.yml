@@ -1,0 +1,6 @@
+pointBox:
+  caption:
+    ja_JP: "ポイントボックス"
+  description:
+    ja_JP: "ホーム画面にメンバーのポイント情報を設置できます。"
+  component: [point, pointBox]

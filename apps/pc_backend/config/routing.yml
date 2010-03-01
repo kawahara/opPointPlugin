@@ -1,0 +1,25 @@
+op_point_point_configure:
+  url: /opPointPlugin
+  param: { module: opPointPlugin, action: pointConfigure }
+
+op_point_member_point:
+  url: /opPointPlugin/memberPoint
+  param: { module: opPointPlugin, action: memberPoint }
+
+op_point_edit_member_point:
+  class: sfDoctrineRoute
+  url: /opPointPlugin/editMemberPoint/:id
+  param: { module: opPointPlugin, action: editMemberPoint }
+  requirements: { id: '\d+', sf_method: [get] }
+  options: { model: Member, type: object }
+
+op_point_update_member_point:
+  class: sfDoctrineRoute
+  url: /opPointPlugin/updateMemberPoint/:id
+  param: { module: opPointPlugin, action: updateMemberPoint }
+  requirements: { id: '\d+', sf_method: [post] }
+  options: { model: Member, type: object }
+
+op_point_nodefault:
+  url: /opPointPlugin/*
+  param: { module: default, action: error }
