@@ -64,11 +64,39 @@ class opPointPluginConfiguration extends sfPluginConfiguration
   * 
   * @param string $name
   */
-  protected function pointUp($name)
+  protected function pointUp($name, $memberId = null)
   {
     $point = (int)Doctrine::getTable('SnsConfig')->get('op_point_'.$name, 0);
     $reason = isset(self::$pointConfig[$name]['caption']) ? self::$pointConfig[$name]['caption'] : $name;
-    opPointUtil::addPoint($point, null, $reason);
+    opPointUtil::addPoint($point, $memberId, $reason);
+  }
+
+ /**
+  * listen to accept post
+  *
+  * @param sfEvent $event
+  * @param string  $name
+  */
+  protected function listenToAcceptPost(sfEvent $event, $name)
+  {
+    if ('mobile_mail_frontend' === $this->configuration->getApplication())
+    {
+      if (($event['actionInstance']->getRoute()->getMember() instanceof Member) &&
+        sfView::NONE === $event['result']
+      )
+      {
+        $this->pointUp($name, $event['actionInstance']->getRoute()->getMember()->getId());
+      }
+    }
+    else
+    {
+      if (($event->getSubject() instanceof opFrontWebController) &&
+        sfView::SUCCESS === $event['result']
+      )
+      {
+        $this->pointUp($name);
+      }
+    }
   }
 
  /**
@@ -97,8 +125,7 @@ class opPointPluginConfiguration extends sfPluginConfiguration
         if (isset(self::$pointConfig[$name]['check']))
         {
           $check = self::$pointConfig[$name]['check'];
-          if (
-            ('redirect' === $check &&
+          if (('redirect' === $check &&
             ($event->getSubject() instanceof opFrontWebController) &&
             sfView::SUCCESS === $event['result']) ||
             $event['result'] === $check
@@ -131,5 +158,25 @@ class opPointPluginConfiguration extends sfPluginConfiguration
         $this->pointUp('create_community');
       }
     } 
+  }
+
+ /**
+  * listen to post diary
+  *
+  * @param sfEvent $event
+  */
+  public function listenToPostDiary(sfEvent $event)
+  {
+    $this->listenToAcceptPost($event, 'post_diary');
+  }
+
+ /**
+  * listen to post diary comment
+  *
+  * @param sfEvent $event
+  */
+  public function listenToPostDiaryComment(sfEvent $event)
+  {
+    $this->listenToAcceptPost($event, 'post_diary_comment');
   }
 }
